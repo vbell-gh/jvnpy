@@ -43,3 +43,19 @@ class TitForTatAgent(Agent):
             return state.opponent_decisions[-1]
         elif role == "opponent":
             return state.player_decisions[-1]
+
+
+class MostlyTitForTatAgent(Agent):
+    def act(self, state, role: str, p=0.1):
+        if len(state.opponent_decisions) == 0:
+            return 1
+        elif role == "player":
+            if state.opponent_decisions[-1] == 1 and random.random() < p:
+                return 0
+            else:
+                return state.opponent_decisions[-1]
+        elif role == "opponent":
+            if state.player_decisions[-1] == 1 and random.random() < p:
+                return 0
+            else:
+                return state.player_decisions[-1]
