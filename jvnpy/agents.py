@@ -45,17 +45,36 @@ class TitForTatAgent(Agent):
             return state.player_decisions[-1]
 
 
-class MostlyTitForTatAgent(Agent):
-    def act(self, state, role: str, p=0.1):
+class ProbabilityTitForTatAgent(Agent):
+    def __init__(self, p=0.1):
+        self.p = p
+
+    def act(self, state, role: str):
         if len(state.opponent_decisions) == 0:
             return 1
         elif role == "player":
-            if state.opponent_decisions[-1] == 1 and random.random() < p:
+            if state.opponent_decisions[-1] == 1 and random.random() < self.p:
                 return 0
             else:
                 return state.opponent_decisions[-1]
         elif role == "opponent":
-            if state.player_decisions[-1] == 1 and random.random() < p:
+            if state.player_decisions[-1] == 1 and random.random() < self.p:
                 return 0
             else:
                 return state.player_decisions[-1]
+
+
+class VindictiveAgent(Agent):
+    def act(self, state, role: str):
+        if len(state.opponent_decisions) == 0:
+            return 1
+        elif role == "player":
+            if 0 in state.opponent_decisions:
+                return 0
+            else:
+                return 1
+        elif role == "opponent":
+            if 0 in state.player_decisions:
+                return 0
+            else:
+                return 1
