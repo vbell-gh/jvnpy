@@ -1,3 +1,4 @@
-*.ipynb
+test.ipynb
+testis.ipynb
 __pycache__/
 *.pyc
