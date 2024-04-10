@@ -1,2 +1,2 @@
 from .main import Game
-from .state import State 
+from .state import State

@@ -6,6 +6,12 @@ from jvnpy.state import State
 
 
 class Rewards:
+    """ The Class Rewards is used to define the rewards for the game.
+        The rewards can be customized
+
+    Returns:
+        Scores, which is a named tuple with the player and opponent rewards based
+    """
     Scores = namedtuple("Score", ["player", "opponent"])
 
     def __init__(
@@ -27,6 +33,27 @@ class Rewards:
 
 
 class Game:
+    """
+    Represents a game between two agents.
+
+    Args:
+        player (Agent): The player agent.
+        opponent (Agent): The opponent agent.
+        state (State): The initial state of the game.
+        rewards (Optional[Rewards]): The rewards class for the game. If None, default rewards will be used.
+
+    Attributes:
+        rewards (Rewards): The rewards class for the game.
+        player (Agent): The player agent.
+        opponent (Agent): The opponent agent.
+        state (State): The current state of the game.
+
+    Methods:
+        forward(): Advances the game by one step, returns the state.
+        play_n_rounds(n: int): Plays the game for n rounds, returns the state.
+
+    """
+
     def __init__(
         self,
         player: Agent,
@@ -47,6 +74,15 @@ class Game:
             self.rewards = rewards.get_rewards()  # Use the custom rewards class
 
     def forward(self):
+        """
+        Advances the game by one step.
+
+        Returns:
+            State: The state of the game.
+
+        Raises:
+            ValueError: If the combination of player and opponent actions is invalid.
+        """
         # Pass the state to the agents
         player_action = self.player.act(self.state, role="player")
         opponent_action = self.opponent.act(self.state, role="opponent")
@@ -68,6 +104,16 @@ class Game:
         return self.state
 
     def play_n_rounds(self, n: int):
+        """
+        Plays the game for n rounds.
+
+        Args:
+            n (int): The number of rounds to play.
+
+        Returns:
+            State: The state of the game.
+
+        """
         try:
             for _ in range(n):
                 self.state = self.forward()
